@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "537008497847",
+    "project_id": "festapp-544f2",
+    "storage_bucket": "festapp-544f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537008497847:android:6069f49c9d2ace82865932",
+        "android_client_info": {
+          "package_name": "com.example.festapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537008497847-d4akfohoentvjca4e1snbf6eckplrueg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDjPOkG7rfq1iSwrlTH3_rdrEYRrkoil4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537008497847-d4akfohoentvjca4e1snbf6eckplrueg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
