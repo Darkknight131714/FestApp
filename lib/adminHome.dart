@@ -1,5 +1,7 @@
 import 'package:festapp/addEvent.dart';
 import 'package:festapp/addMerch.dart';
+import 'package:festapp/addRegisterEvent.dart';
+import 'package:festapp/adminEventScreen.dart';
 import 'package:festapp/adminOrders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +58,22 @@ class _AdminHomeState extends State<AdminHome> {
               }));
             },
             child: Text("Add Event"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return AddRegisterEventScreen();
+              }));
+            },
+            child: Text("Add Registerable Event"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return AdminEventScreen();
+              }));
+            },
+            child: Text("See your events"),
           ),
         ],
       ),

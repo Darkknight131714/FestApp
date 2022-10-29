@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:festapp/registerTeam.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -131,5 +132,70 @@ Future<void> uploadEvent(String title, String desc, String venue, String link,
     'link': link,
     'date': selec,
     'time': time,
+    'register': false,
   });
+}
+
+Future<void> uploadRegisterEvent(
+    String title,
+    String desc,
+    String venue,
+    String link,
+    DateTime? selec,
+    String time,
+    DateTime? deadline,
+    int teamSize) async {
+  FirebaseFirestore.instance.collection('events').add({
+    'fest': mainUser.fest[0] + mainUser.fest[1] + mainUser.fest[2],
+    'title': title,
+    'desc': desc,
+    'venue': venue,
+    'link': link,
+    'date': selec,
+    'time': time,
+    'register': true,
+    'deadline': deadline,
+    'teamSize': teamSize,
+    'emails': [],
+    'registrations': []
+  });
+}
+
+Future<int> checkEmails(List<String> emails) async {
+  int count = 0;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  await users.get().then((snap) {
+    for (var doc in snap.docs) {
+      if (emails.contains(doc['email'])) {
+        for (int i = 0; i < emails.length; i++) {
+          if (doc['email'] == emails[i]) {
+            names[i] = doc['name'];
+          }
+        }
+        count++;
+      }
+    }
+  });
+  return count;
+}
+
+Future<String> checkAlreadyRegistered(List<String> emails, String docID) async {
+  bool cond = true;
+  String email = "";
+  DocumentReference event =
+      FirebaseFirestore.instance.collection('events').doc(docID);
+  await event.get().then((snap) {
+    print(snap['emails']);
+    for (int i = 0; i < emails.length; i++) {
+      if (snap['emails'].contains(emails[i])) {
+        cond = false;
+        email = emails[i];
+      }
+    }
+  });
+  if (cond) {
+    return '@accepted';
+  } else {
+    return email;
+  }
 }

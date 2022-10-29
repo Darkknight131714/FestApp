@@ -1,6 +1,7 @@
 import 'package:festapp/buyMerch.dart';
 import 'package:festapp/main.dart';
 import 'package:festapp/seeEvents.dart';
+import 'package:festapp/seeRegistrations.dart';
 import 'package:festapp/userOrders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,30 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             },
             child: Text("See Events"),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.orange,
+              minimumSize: Size(120, 40),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side: BorderSide(
+                  color: Colors.transparent,
+                  width: 2.0,
+                ),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) {
+                    return SeeRegistrationScreen();
+                  },
+                ),
+              );
+            },
+            child: Text("See Your Registrations"),
           ),
         ],
       ),
