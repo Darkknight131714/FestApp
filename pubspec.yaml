@@ -46,7 +46,6 @@ dependencies:
   numberpicker: ^2.1.1
   flutter_local_notifications:
   top_snackbar_flutter:
-  to_csv:
 
 dev_dependencies:
   flutter_test:
