@@ -4,7 +4,10 @@ import 'package:festapp/seeEvents.dart';
 import 'package:festapp/seeRegistrations.dart';
 import 'package:festapp/userOrders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,6 +18,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage m) {
+      String info = m.notification!.body.toString();
+      String title = m.notification!.title.toString();
+      showTopSnackBar(
+        context,
+        CustomSnackBar.info(message: title + ": " + info),
+        displayDuration: Duration(seconds: 1),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -23,6 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
+              String temp = mainUser.email.replaceAll('@', '_');
+              FirebaseMessaging.instance.unsubscribeFromTopic(temp);
+              FirebaseMessaging.instance.unsubscribeFromTopic('student');
               if (mainUser.fest != "") {
                 Navigator.pop(context);
               }

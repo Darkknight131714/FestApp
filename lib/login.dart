@@ -1,4 +1,5 @@
 import 'package:festapp/signUp.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'func.dart';
 
@@ -82,6 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: () async {
                 String value = await signIn(email, password);
                 if (value == 'True') {
+                  await FirebaseMessaging.instance.subscribeToTopic('student');
+                  String temp = email.replaceAll('@', '_');
+                  await FirebaseMessaging.instance.subscribeToTopic(temp);
                   await keepLoggedIn(email);
                 } else {
                   ScaffoldMessenger.of(context)

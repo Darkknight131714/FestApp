@@ -3,7 +3,9 @@ import 'package:festapp/addMerch.dart';
 import 'package:festapp/addRegisterEvent.dart';
 import 'package:festapp/adminEventScreen.dart';
 import 'package:festapp/adminOrders.dart';
+import 'package:festapp/sendNotif.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'main.dart';
@@ -25,6 +27,9 @@ class _AdminHomeState extends State<AdminHome> {
           IconButton(
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
+              String temp = mainUser.email.replaceAll('@', '_');
+              FirebaseMessaging.instance.unsubscribeFromTopic(temp);
+              FirebaseMessaging.instance.unsubscribeFromTopic('student');
               if (mainUser.fest != "") {
                 Navigator.pop(context);
               }
@@ -74,6 +79,14 @@ class _AdminHomeState extends State<AdminHome> {
               }));
             },
             child: Text("See your events"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return SendNotifScreen();
+              }));
+            },
+            child: Text("Send Notifications"),
           ),
         ],
       ),

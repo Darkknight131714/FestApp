@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:festapp/editEvent.dart';
+import 'package:festapp/individualRegistration.dart';
 import 'package:festapp/main.dart';
+import 'package:festapp/registerTeam.dart';
+import 'package:festapp/teamRegistration.dart';
 import 'package:flutter/material.dart';
 
 class AdminEventScreen extends StatefulWidget {
@@ -43,7 +46,23 @@ class _AdminEventScreenState extends State<AdminEventScreen> {
                     title: Text(snapshot.data!.docs[ind]['title']),
                     trailing: snapshot.data!.docs[ind]['register']
                         ? ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (snapshot.data!.docs[ind]['teamSize'] == 1) {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (_) {
+                                  return IndividualRegistrationScreen(
+                                      docID: snapshot.data!.docs[ind].id);
+                                }));
+                              } else {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (_) {
+                                  return TeamRegistrationScreen(
+                                      docID: snapshot.data!.docs[ind].id,
+                                      size: snapshot.data!.docs[ind]
+                                          ['teamSize']);
+                                }));
+                              }
+                            },
                             child: Text("See registrations"),
                           )
                         : null,

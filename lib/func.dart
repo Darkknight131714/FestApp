@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'main.dart';
+import 'package:http/http.dart' as http;
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -198,4 +199,24 @@ Future<String> checkAlreadyRegistered(List<String> emails, String docID) async {
   } else {
     return email;
   }
+}
+
+Future sendNotif(String title, String info) async {
+  Map<String, dynamic> m = {
+    "to": "/topics/student",
+    "notification": {
+      "body": info,
+      "title": title,
+    },
+    "body": info,
+    "title": title,
+    "mutable_content": true,
+    "sound": "Tri-tone"
+  };
+  Uri url = Uri.parse("https://fcm.googleapis.com/fcm/send");
+  var resp = await http.post(url, body: jsonEncode(m), headers: {
+    "Authorization":
+        "key=AAAAfQgzZLc:APA91bErrTyOqy_tQYphJRhE8sKtjGV1le8GFOQIWmbsFvoJ2HkefKTBt67FbQUgB9NY8ZMCLM9hFQ6X0kqdndRzV8pISQ7jH2o4qpMseb5L46HzpoqbI5t7HI61EWyNzFvRehUymnkx",
+    "Content-Type": "application/json"
+  });
 }

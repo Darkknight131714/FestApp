@@ -16,6 +16,7 @@ class TeamRegisterScreen extends StatefulWidget {
 
 class _TeamRegisterScreenState extends State<TeamRegisterScreen> {
   List<String> emails = [];
+  String teamName = "";
   @override
   void initState() {
     // TODO: implement initState
@@ -38,6 +39,14 @@ class _TeamRegisterScreenState extends State<TeamRegisterScreen> {
         actions: [
           IconButton(
               onPressed: () async {
+                if (teamName == "") {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Please Enter a Team Name"),
+                    ),
+                  );
+                  return;
+                }
                 List<String> newEmails = emails.toSet().toList();
                 if (newEmails.length < widget.size) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -65,6 +74,7 @@ class _TeamRegisterScreenState extends State<TeamRegisterScreen> {
                     await event.get().then((snap) {
                       List<dynamic> eventEmails = snap['emails'];
                       List<dynamic> eventRegistrations = snap['registrations'];
+                      eventRegistrations.add(teamName);
                       eventRegistrations.add(mainUser.mobile);
                       for (int i = 0; i < emails.length; i++) {
                         eventEmails.add(emails[i]);
@@ -117,10 +127,10 @@ class _TeamRegisterScreenState extends State<TeamRegisterScreen> {
         child: ConstrainedBox(
           constraints:
               BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
-          child: ListView.builder(
-            itemCount: widget.size - 1,
-            itemBuilder: (_, ind) {
-              return Padding(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
                   style: TextStyle(color: Colors.black),
@@ -131,16 +141,43 @@ class _TeamRegisterScreenState extends State<TeamRegisterScreen> {
                     hintStyle: TextStyle(color: Colors.black),
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: "Email",
+                    hintText: "Team Name",
                   ),
                   onChanged: (value) {
                     setState(() {
-                      emails[ind + 1] = value;
+                      teamName = value;
                     });
                   },
                 ),
-              );
-            },
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: widget.size - 1,
+                  itemBuilder: (_, ind) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextField(
+                        style: TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          hintStyle: TextStyle(color: Colors.black),
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Email",
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            emails[ind + 1] = value;
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
