@@ -1,4 +1,5 @@
 import 'package:festapp/home.dart';
+import 'package:festapp/inter.dart';
 import 'package:flutter/material.dart';
 
 import 'adminHome.dart';
@@ -38,7 +39,7 @@ class _MidScreenState extends State<MidScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (_) {
-                    return HomeScreen();
+                    return InterScreen();
                   },
                 ),
               );

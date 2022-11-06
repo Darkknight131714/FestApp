@@ -53,7 +53,16 @@ class _BuyMerchState extends State<BuyMerch> {
                 ),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) {
+                    return MerchScreen(fest: 'efe');
+                  },
+                ),
+              );
+            },
             child: Text("Effe"),
           ),
           ElevatedButton(
@@ -68,7 +77,16 @@ class _BuyMerchState extends State<BuyMerch> {
                 ),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) {
+                    return MerchScreen(fest: 'asm');
+                  },
+                ),
+              );
+            },
             child: Text("Asmita"),
           ),
         ],

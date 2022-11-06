@@ -1,5 +1,6 @@
 import 'package:festapp/adminHome.dart';
 import 'package:festapp/home.dart';
+import 'package:festapp/inter.dart';
 import 'package:festapp/login.dart';
 import 'package:festapp/midScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -66,7 +67,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.hasData) {
             keepLoggedIn(FirebaseAuth.instance.currentUser!.email.toString());
             if (Provider.of<CustomUser>(context).fest == '') {
-              return HomeScreen();
+              return InterScreen();
             } else {
               return MidScreen();
             }

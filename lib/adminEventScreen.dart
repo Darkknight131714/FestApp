@@ -40,7 +40,10 @@ class _AdminEventScreenState extends State<AdminEventScreen> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (_) {
                         return EditEventScreen(
-                            docID: snapshot.data!.docs[ind].id);
+                          docID: snapshot.data!.docs[ind].id,
+                          fest: snapshot.data!.docs[ind]['fest'],
+                          title: snapshot.data!.docs[ind]['title'],
+                        );
                       }));
                     },
                     title: Text(snapshot.data!.docs[ind]['title']),

@@ -52,104 +52,171 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              minimumSize: Size(120, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.transparent,
-                  width: 2.0,
-                ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            height: 250,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.red, Colors.deepOrange.shade300],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                stops: [0.5, 0.9],
               ),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return BuyMerch();
-                  },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: Colors.white70,
+                      minRadius: 60.0,
+                      child: CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage: NetworkImage(
+                            'https://aaa.iiita.ac.in/slideshow1/6.jpg'),
+                      ),
+                    ),
+                  ],
                 ),
-              );
-            },
-            child: Text("Buy Merch"),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              minimumSize: Size(120, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.transparent,
-                  width: 2.0,
+                SizedBox(
+                  height: 10,
                 ),
-              ),
+                Text(
+                  mainUser.name,
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  'Student',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
+                ),
+              ],
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return UserOrders();
-                  },
-                ),
-              );
-            },
-            child: Text("See Your Orders"),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              minimumSize: Size(120, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.transparent,
-                  width: 2.0,
+          Container(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'Email',
+                    style: TextStyle(
+                      color: Colors.deepOrange,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    mainUser.email,
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
-              ),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    'Mobile Number',
+                    style: TextStyle(
+                      color: Colors.deepOrange,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    mainUser.mobile,
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Divider(),
+                ListTile(
+                  title: Text(
+                    'Roll Number',
+                    style: TextStyle(
+                      color: Colors.deepOrange,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(
+                    mainUser.roll,
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          color: Colors.deepOrange.shade300,
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) {
+                                    return UserOrders();
+                                  },
+                                ),
+                              );
+                            },
+                            title: Text(
+                              'Your Orders',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Colors.red,
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) {
+                                    return SeeRegistrationScreen();
+                                  },
+                                ),
+                              );
+                            },
+                            title: Text(
+                              'Your Events',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return EventScreen();
-                  },
-                ),
-              );
-            },
-            child: Text("See Events"),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              minimumSize: Size(120, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.transparent,
-                  width: 2.0,
-                ),
-              ),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return SeeRegistrationScreen();
-                  },
-                ),
-              );
-            },
-            child: Text("See Your Registrations"),
-          ),
+          )
         ],
       ),
     );

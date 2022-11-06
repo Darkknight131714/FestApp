@@ -28,22 +28,47 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event Detail"),
-      ),
-      body: Column(
-        children: [
-          SizedBox(width: double.infinity),
-          Image.network(
-            widget.doc['link'],
-            height: MediaQuery.of(context).size.height / 2,
-          ),
-          Text("Fest: ${widget.doc['fest']}"),
-          Text("Title: ${widget.doc['title']}"),
-          Text("Description: ${widget.doc['desc']}"),
-          Text("Date: ${date}"),
-          Text("Time: ${widget.doc['time']}"),
-          Text("Venue: ${widget.doc['venue']}"),
+        title: Text(widget.doc['title']),
+        actions: [
+          Text(
+            widget.doc['fest'].toUpperCase(),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          )
         ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            SizedBox(width: double.infinity),
+            Image.network(
+              widget.doc['link'],
+              height: MediaQuery.of(context).size.height / 2,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Description: ${widget.doc['desc']}",
+              style: TextStyle(fontSize: 25),
+            ),
+            Divider(
+              color: Colors.orange,
+            ),
+            Text(
+              "Date: ${date}",
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              "Time: ${widget.doc['time']}",
+              style: TextStyle(fontSize: 20),
+            ),
+            Text(
+              "Venue: ${widget.doc['venue']}",
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -6,7 +6,10 @@ import 'package:intl/intl.dart';
 
 class RegisterEventDetailScreen extends StatefulWidget {
   String docID;
-  RegisterEventDetailScreen({required this.docID});
+  String fest;
+  String title;
+  RegisterEventDetailScreen(
+      {required this.docID, required this.fest, required this.title});
 
   @override
   State<RegisterEventDetailScreen> createState() => _EventDetailScreenState();
@@ -15,12 +18,17 @@ class RegisterEventDetailScreen extends StatefulWidget {
 class _EventDetailScreenState extends State<RegisterEventDetailScreen> {
   String date = "";
   String deadlineDate = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Registerable Event Detail"),
+        title: Text(widget.title),
+        actions: [
+          Text(
+            widget.fest.toUpperCase(),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          )
+        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -43,67 +51,89 @@ class _EventDetailScreenState extends State<RegisterEventDetailScreen> {
             inputDate = inputFormat.parse(temp.toString());
             outputFormat = DateFormat('dd/MM/yyyy');
             deadlineDate = outputFormat.format(inputDate);
-            return Column(
-              children: [
-                SizedBox(width: double.infinity),
-                Image.network(
-                  snapshot.data!['link'],
-                  height: MediaQuery.of(context).size.height / 2,
-                ),
-                Text("Fest: ${snapshot.data!['fest']}"),
-                Text("Title: ${snapshot.data!['title']}"),
-                Text("Description: ${snapshot.data!['desc']}"),
-                Text("Date: ${date}"),
-                Text("Time: ${snapshot.data!['time']}"),
-                Text("Venue: ${snapshot.data!['venue']}"),
-                Text("Team Size: ${snapshot.data!['teamSize']}"),
-                Text("Deadline: ${deadlineDate}"),
-                ElevatedButton(
-                  onPressed: () {
-                    if (snapshot.data!['teamSize'] == 1) {
-                      if (snapshot.data!['emails'].contains(mainUser.email)) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("User has already registered"),
-                          ),
-                        );
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  SizedBox(width: double.infinity),
+                  Image.network(
+                    snapshot.data!['link'],
+                    height: MediaQuery.of(context).size.height / 2,
+                  ),
+                  Text(
+                    "Description: ${snapshot.data!['desc']}",
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  Divider(
+                    color: Colors.orange,
+                  ),
+                  Text(
+                    "Date: ${date}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Time: ${snapshot.data!['time']}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Venue: ${snapshot.data!['venue']}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Team Size: ${snapshot.data!['teamSize']}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Deadline: ${deadlineDate}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (snapshot.data!['teamSize'] == 1) {
+                        if (snapshot.data!['emails'].contains(mainUser.email)) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("User has already registered"),
+                            ),
+                          );
+                        } else {
+                          List<dynamic> regis = snapshot.data!['registrations'];
+                          regis.add(mainUser.mobile);
+                          regis.add(mainUser.name);
+                          regis.add(mainUser.email);
+                          snapshot.data!.reference.update({
+                            'emails': FieldValue.arrayUnion([mainUser.email]),
+                            'registrations': regis,
+                          });
+                          FirebaseFirestore.instance
+                              .collection('registrations')
+                              .add({
+                            'email': mainUser.email,
+                            'docID': widget.docID,
+                            'time': snapshot.data!['date'],
+                            'title': snapshot.data!['title'],
+                            'desc': snapshot.data!['desc'],
+                            'venue': snapshot.data!['venue'],
+                            'link': snapshot.data!['link'],
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("User Registered Successfully"),
+                            ),
+                          );
+                        }
                       } else {
-                        List<dynamic> regis = snapshot.data!['registrations'];
-                        regis.add(mainUser.mobile);
-                        regis.add(mainUser.name);
-                        regis.add(mainUser.email);
-                        snapshot.data!.reference.update({
-                          'emails': FieldValue.arrayUnion([mainUser.email]),
-                          'registrations': regis,
-                        });
-                        FirebaseFirestore.instance
-                            .collection('registrations')
-                            .add({
-                          'email': mainUser.email,
-                          'docID': widget.docID,
-                          'time': snapshot.data!['date'],
-                          'title': snapshot.data!['title'],
-                          'desc': snapshot.data!['desc'],
-                          'venue': snapshot.data!['venue'],
-                          'link': snapshot.data!['link'],
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("User Registered Successfully"),
-                          ),
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (_) {
+                          return TeamRegisterScreen(
+                              docID: widget.docID,
+                              size: snapshot.data!['teamSize']);
+                        }));
                       }
-                    } else {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) {
-                        return TeamRegisterScreen(
-                            docID: widget.docID,
-                            size: snapshot.data!['teamSize']);
-                      }));
-                    }
-                  },
-                  child: Text("Register"),
-                ),
-              ],
+                    },
+                    child: Text("Register"),
+                  ),
+                ],
+              ),
             );
           }
         },
