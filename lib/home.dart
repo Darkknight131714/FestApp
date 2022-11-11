@@ -6,6 +6,7 @@ import 'package:festapp/userOrders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
@@ -86,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 10,
                 ),
                 Text(
-                  mainUser.name,
+                  Provider.of<CustomUser>(context).name,
                   style: TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.bold,
@@ -116,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   subtitle: Text(
-                    mainUser.email,
+                    Provider.of<CustomUser>(context).email,
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -133,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   subtitle: Text(
-                    mainUser.mobile,
+                    Provider.of<CustomUser>(context).mobile,
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -150,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   subtitle: Text(
-                    mainUser.roll,
+                    Provider.of<CustomUser>(context).roll,
                     style: TextStyle(
                       fontSize: 18,
                     ),
