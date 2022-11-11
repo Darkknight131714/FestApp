@@ -89,6 +89,17 @@ class _EventDetailScreenState extends State<RegisterEventDetailScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      var temp = new DateTime.fromMicrosecondsSinceEpoch(
+                          snapshot.data!['deadline'].microsecondsSinceEpoch);
+                      if (temp.isBefore(DateTime.now())) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                "Registration deadline is over. Please contact Fest Co-ordinator for any extensions."),
+                          ),
+                        );
+                        return;
+                      }
                       if (snapshot.data!['teamSize'] == 1) {
                         if (snapshot.data!['emails'].contains(mainUser.email)) {
                           ScaffoldMessenger.of(context).showSnackBar(

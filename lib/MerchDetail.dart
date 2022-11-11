@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:festapp/func.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 
 late Razorpay _razorpay;
 
@@ -17,6 +18,8 @@ class MerchDetail extends StatefulWidget {
 
 class _MerchDetailState extends State<MerchDetail> {
   String? color = "";
+  String def = "";
+  String def1 = "";
   List<String> sizes = ["S", "M", "L", "XL"];
   String? size = "S";
   @override
@@ -24,6 +27,8 @@ class _MerchDetailState extends State<MerchDetail> {
     // TODO: implement initState
     super.initState();
     color = widget.doc['colors'][0];
+    def = color!;
+    def1 = sizes[0];
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -100,57 +105,66 @@ class _MerchDetailState extends State<MerchDetail> {
               BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
           child: Column(
             children: [
-              Expanded(
+              SizedBox(
+                width: 500,
+                height: 400,
                 child: Swiper(
                   itemCount: widget.doc['links'].length,
                   pagination: SwiperPagination(),
                   itemBuilder: (_, ind) {
                     return Image.network(
                       widget.doc['links'][ind],
+                      fit: BoxFit.fitWidth,
                     );
                   },
                 ),
               ),
               Text("Price: ${widget.doc['price']}"),
-              Expanded(
-                child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: widget.doc['colors'].length,
-                  itemBuilder: (_, ind) {
-                    return ListTile(
-                      title: Text(widget.doc['colors'][ind]),
-                      leading: Radio<String>(
-                        value: widget.doc['colors'][ind],
-                        groupValue: color,
-                        onChanged: (String? value) {
-                          setState(() {
-                            color = value;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
+              Divider(
+                color: Colors.orange,
               ),
-              Expanded(
-                child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: sizes.length,
-                  itemBuilder: (_, ind) {
-                    return ListTile(
-                      title: Text(sizes[ind]),
-                      leading: Radio<String>(
-                        value: sizes[ind],
-                        groupValue: size,
-                        onChanged: (String? value) {
-                          setState(() {
-                            size = value;
-                          });
-                        },
-                      ),
-                    );
-                  },
-                ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("Select your Color"),
+              CustomRadioButton(
+                horizontal: false,
+                enableShape: true,
+                unSelectedColor: Colors.grey,
+                buttonLables: widget.doc['colors'].map<String>((val) {
+                  return val.toString();
+                }).toList(),
+                buttonValues: widget.doc['colors'].map<String>((val) {
+                  return val.toString();
+                }).toList(),
+                defaultSelected: def,
+                radioButtonValue: (value) {
+                  setState(() {
+                    color = value.toString();
+                  });
+                },
+                selectedColor: Theme.of(context).accentColor,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("Select your Color"),
+              CustomRadioButton(
+                horizontal: false,
+                enableShape: true,
+                unSelectedColor: Colors.grey,
+                buttonLables: sizes,
+                buttonValues: sizes,
+                defaultSelected: def1,
+                radioButtonValue: (value) {
+                  setState(() {
+                    size = value.toString();
+                  });
+                },
+                selectedColor: Theme.of(context).accentColor,
+              ),
+              SizedBox(
+                height: 10,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(

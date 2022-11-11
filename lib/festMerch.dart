@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:festapp/MerchDetail.dart';
+import 'package:festapp/viewTeam.dart';
 import 'package:flutter/material.dart';
 
 class MerchScreen extends StatefulWidget {
@@ -16,6 +17,16 @@ class _MerchScreenState extends State<MerchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Available Merch"),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return ViewTeam(fest: widget.fest);
+              }));
+            },
+            child: Text("View Team"),
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

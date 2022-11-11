@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 
 import 'main.dart';
 
+// List<String> suggestions = [];
+
 class AdminHome extends StatefulWidget {
   const AdminHome({Key? key}) : super(key: key);
 
@@ -54,7 +56,7 @@ class _AdminHomeState extends State<AdminHome> {
             ),
             ListTile(
               title: const Text("See Orders"),
-              onTap: () {
+              onTap: () async {
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
                   return AdminOrders();
                 }));

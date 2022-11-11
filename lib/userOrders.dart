@@ -15,6 +15,49 @@ class _UserOrdersState extends State<UserOrders> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Your Orders"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: Text(
+                          "Are you sure you want to delete all the orders which have been delivered? Please make sure there are no orders wrongly marked delivered."),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            await FirebaseFirestore.instance
+                                .collection('orders')
+                                .where('email', isEqualTo: mainUser.email)
+                                .get()
+                                .then((QuerySnapshot querySnapshot) {
+                              for (var documentSnapshot in querySnapshot.docs) {
+                                if (documentSnapshot['delivered']) {
+                                  documentSnapshot.reference.delete();
+                                }
+                              }
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: Text("Yes"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("No"),
+                        ),
+                      ],
+                    );
+                  });
+            },
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -29,6 +72,9 @@ class _UserOrdersState extends State<UserOrders> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (_, ind) {
                 return Card(
+                  color: snapshot.data!.docs[ind]['delivered']
+                      ? Colors.green
+                      : Colors.grey,
                   child: ListTile(
                     title: Text(snapshot.data!.docs[ind]['merchName']),
                     subtitle: Text(snapshot.data!.docs[ind]['fest']),
@@ -37,6 +83,8 @@ class _UserOrdersState extends State<UserOrders> {
                       children: [
                         Text("Color: ${snapshot.data!.docs[ind]['color']}"),
                         Text("Size: ${snapshot.data!.docs[ind]['size']}"),
+                        if (snapshot.data!.docs[ind]['delivered'])
+                          Text("Delivered")
                       ],
                     ),
                   ),

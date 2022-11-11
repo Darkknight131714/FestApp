@@ -1,4 +1,5 @@
 import 'package:festapp/festMerch.dart';
+import 'package:festapp/viewTeam.dart';
 import 'package:flutter/material.dart';
 
 class BuyMerch extends StatefulWidget {
@@ -17,77 +18,50 @@ class _BuyMerchState extends State<BuyMerch> {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              minimumSize: Size(120, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.transparent,
-                  width: 2.0,
-                ),
-              ),
+          Card(
+            child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return MerchScreen(fest: 'apk');
+                    },
+                  ),
+                );
+              },
+              title: Text("Aparoksha"),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return MerchScreen(fest: 'apk');
-                  },
-                ),
-              );
-            },
-            child: Text("APK"),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              minimumSize: Size(120, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.transparent,
-                  width: 2.0,
-                ),
-              ),
+          Card(
+            child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return MerchScreen(fest: 'efe');
+                    },
+                  ),
+                );
+              },
+              title: Text("Effervesence"),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return MerchScreen(fest: 'efe');
-                  },
-                ),
-              );
-            },
-            child: Text("Effe"),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              minimumSize: Size(120, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.transparent,
-                  width: 2.0,
-                ),
-              ),
+          Card(
+            child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return MerchScreen(fest: 'asm');
+                    },
+                  ),
+                );
+              },
+              title: Text("Asmita"),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return MerchScreen(fest: 'asm');
-                  },
-                ),
-              );
-            },
-            child: Text("Asmita"),
           ),
         ],
       ),

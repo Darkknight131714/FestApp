@@ -36,11 +36,45 @@ class _SeeRegistrationScreenState extends State<SeeRegistrationScreen> {
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (_) {
                           return AnotherEventDetailScreen(
-                              docID: snapshot.data!.docs[ind]['docID']);
+                            docID: snapshot.data!.docs[ind]['docID'],
+                            title: snapshot.data!.docs[ind]['title'],
+                          );
                         }));
                       },
                       title: Text(snapshot.data!.docs[ind]['title']),
                       subtitle: Text(snapshot.data!.docs[ind]['desc']),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (_) {
+                                return AlertDialog(
+                                  title: Text(
+                                      "Are you sure you want to do this? This will clear this registration from here but your registration will still be there with the admins."),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        snapshot.data!.docs[ind].reference
+                                            .delete();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Yes"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("No"),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                      ),
                     ),
                   );
                 },

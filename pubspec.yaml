@@ -46,6 +46,9 @@ dependencies:
   numberpicker: ^2.1.1
   flutter_local_notifications:
   top_snackbar_flutter:
+  custom_radio_grouped_button:
+  flutter_phone_direct_caller: ^2.1.1
+  easy_search_bar: ^2.3.1
 
 dev_dependencies:
   flutter_test:

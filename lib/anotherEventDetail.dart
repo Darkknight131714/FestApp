@@ -5,7 +5,8 @@ import 'package:intl/intl.dart';
 
 class AnotherEventDetailScreen extends StatefulWidget {
   String docID;
-  AnotherEventDetailScreen({required this.docID});
+  String title;
+  AnotherEventDetailScreen({required this.docID, required this.title});
 
   @override
   State<AnotherEventDetailScreen> createState() => _EventDetailScreenState();
@@ -14,12 +15,11 @@ class AnotherEventDetailScreen extends StatefulWidget {
 class _EventDetailScreenState extends State<AnotherEventDetailScreen> {
   String date = "";
   String deadlineDate = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Registerable Event Detail"),
+        title: Text(widget.title),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -42,22 +42,44 @@ class _EventDetailScreenState extends State<AnotherEventDetailScreen> {
             inputDate = inputFormat.parse(temp.toString());
             outputFormat = DateFormat('dd/MM/yyyy');
             deadlineDate = outputFormat.format(inputDate);
-            return Column(
-              children: [
-                SizedBox(width: double.infinity),
-                Image.network(
-                  snapshot.data!['link'],
-                  height: MediaQuery.of(context).size.height / 2,
-                ),
-                Text("Fest: ${snapshot.data!['fest']}"),
-                Text("Title: ${snapshot.data!['title']}"),
-                Text("Description: ${snapshot.data!['desc']}"),
-                Text("Date: ${date}"),
-                Text("Time: ${snapshot.data!['time']}"),
-                Text("Venue: ${snapshot.data!['venue']}"),
-                Text("Team Size: ${snapshot.data!['teamSize']}"),
-                Text("Deadline: ${deadlineDate}"),
-              ],
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  SizedBox(width: double.infinity),
+                  Image.network(
+                    snapshot.data!['link'],
+                    height: MediaQuery.of(context).size.height / 2,
+                  ),
+                  Text(
+                    "Description: ${snapshot.data!['desc']}",
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  Divider(
+                    color: Colors.orange,
+                  ),
+                  Text(
+                    "Date: ${date}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Time: ${snapshot.data!['time']}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Venue: ${snapshot.data!['venue']}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Team Size: ${snapshot.data!['teamSize']}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    "Deadline: ${deadlineDate}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
             );
           }
         },
