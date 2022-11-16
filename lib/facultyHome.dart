@@ -5,6 +5,8 @@ import 'package:festapp/addRegisterEvent.dart';
 import 'package:festapp/adminEventScreen.dart';
 import 'package:festapp/adminMerch.dart';
 import 'package:festapp/adminOrders.dart';
+import 'package:festapp/facultyPower.dart';
+import 'package:festapp/removePower.dart';
 import 'package:festapp/sendNotif.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,14 +16,14 @@ import 'main.dart';
 
 // List<String> suggestions = [];
 
-class AdminHome extends StatefulWidget {
-  const AdminHome({Key? key}) : super(key: key);
+class FacultyHome extends StatefulWidget {
+  const FacultyHome({Key? key}) : super(key: key);
 
   @override
-  State<AdminHome> createState() => _AdminHomeState();
+  State<FacultyHome> createState() => _AdminHomeState();
 }
 
-class _AdminHomeState extends State<AdminHome> {
+class _AdminHomeState extends State<FacultyHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,113 +57,26 @@ class _AdminHomeState extends State<AdminHome> {
               ),
             ),
             ListTile(
-              title: const Text("See Orders"),
+              title: const Text("Give Privilege"),
               onTap: () async {
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return AdminOrders();
+                  return FacultyPower();
                 }));
               },
             ),
             ListTile(
-              title: const Text("See Events"),
+              title: const Text("Remove Privilege"),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return AdminEventScreen();
-                }));
-              },
-            ),
-            ListTile(
-              title: const Text("See Merch"),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return AdminMerchScreen();
-                }));
-              },
-            ),
-            ListTile(
-              title: const Text("Send Notifications"),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return SendNotifScreen();
-                }));
-              },
-            ),
-            ListTile(
-              title: const Text("Add Admin"),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return AddAdminScreen();
+                  return RemovePower();
                 }));
               },
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          showModalBottomSheet<void>(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            context: context,
-            builder: (BuildContext context) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ListTile(
-                      title: Text("Add Merch"),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return addMerchScreen();
-                        }));
-                      },
-                    ),
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ListTile(
-                      title: Text("Add Event"),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return AddEventScreen();
-                        }));
-                      },
-                    ),
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ListTile(
-                      title: Text("Add Registrable Event"),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return AddRegisterEventScreen();
-                        }));
-                      },
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      ),
       appBar: AppBar(
-        title: Text("Admin Home"),
+        title: Text("Faculty Home"),
         actions: [
           IconButton(
             onPressed: () async {
@@ -219,7 +134,7 @@ class _AdminHomeState extends State<AdminHome> {
                   ),
                 ),
                 Text(
-                  mainUser.fest.toUpperCase(),
+                  "FACULTY",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
@@ -265,22 +180,6 @@ class _AdminHomeState extends State<AdminHome> {
                   ),
                 ),
                 Divider(),
-                ListTile(
-                  title: Text(
-                    'Roll Number',
-                    style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  subtitle: Text(
-                    mainUser.roll,
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
               ],
             ),
           )

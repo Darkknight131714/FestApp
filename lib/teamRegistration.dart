@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:to_csv/to_csv.dart' as exportCSV;
 
 class TeamRegistrationScreen extends StatefulWidget {
   String docID;
@@ -29,7 +30,37 @@ class _IndividualRegistrationScreenState extends State<TeamRegistrationScreen> {
         title: Text("All Registrations"),
         actions: [
           IconButton(
-            onPressed: () async {},
+            onPressed: () async {
+              List<List<String>> data = [];
+              List<String> header = [];
+              for (int i = 0; i < req; i++) {
+                if (i == 0) {
+                  header.add("Team Name");
+                  continue;
+                }
+                if (i == 1) {
+                  header.add("Mobile Number");
+                  continue;
+                }
+                if (i % 2 == 0) {
+                  header.add("Name");
+                } else {
+                  header.add("Email");
+                }
+              }
+              data.add(header);
+              List<String> row = [];
+              for (int i = 0; i < lis.length; i++) {
+                if (i % req == 0) {
+                  data.add(row);
+                  row = [];
+                }
+                row.add(lis[i]);
+                // print(row);
+              }
+              data.add(row);
+              exportCSV.myCSV(header, data);
+            },
             icon: Icon(Icons.download),
           ),
         ],

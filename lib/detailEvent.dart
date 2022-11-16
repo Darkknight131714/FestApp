@@ -41,9 +41,11 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
         child: Column(
           children: [
             SizedBox(width: double.infinity),
-            Image.network(
-              widget.doc['link'],
-              height: MediaQuery.of(context).size.height / 2,
+            InteractiveViewer(
+              child: Image.network(
+                widget.doc['link'],
+                height: MediaQuery.of(context).size.height / 2,
+              ),
             ),
             SizedBox(
               height: 10,

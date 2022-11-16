@@ -49,6 +49,9 @@ dependencies:
   custom_radio_grouped_button:
   flutter_phone_direct_caller: ^2.1.1
   easy_search_bar: ^2.3.1
+  to_csv:
+  csv: ^5.0.1
+  swipeable_tile: ^2.0.0+2
 
 dev_dependencies:
   flutter_test:
@@ -59,7 +62,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

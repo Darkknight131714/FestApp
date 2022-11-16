@@ -39,6 +39,8 @@ class _AddEventScreenState extends State<AddRegisterEventScreen> {
                 } else {
                   await uploadRegisterEvent(title, desc, venue, link, selec,
                       timeinput.text, deadlineselec, teamSize);
+                  await sendNotif(
+                      "NEW EVENT!!!😎", title + " is the new Event added.");
                   Navigator.pop(context);
                 }
               },

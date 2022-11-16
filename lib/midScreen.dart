@@ -1,5 +1,7 @@
+import 'package:festapp/facultyHome.dart';
 import 'package:festapp/home.dart';
 import 'package:festapp/inter.dart';
+import 'package:festapp/main.dart';
 import 'package:flutter/material.dart';
 
 import 'adminHome.dart';
@@ -46,30 +48,56 @@ class _MidScreenState extends State<MidScreen> {
             },
             child: Text("Login as Student"),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              minimumSize: Size(120, 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.transparent,
-                  width: 2.0,
+          if (mainUser.fest != "fac")
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orange,
+                minimumSize: Size(120, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(
+                    color: Colors.transparent,
+                    width: 2.0,
+                  ),
                 ),
               ),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return AdminHome();
+                    },
+                  ),
+                );
+              },
+              child: Text("Login as Fest Organizer"),
             ),
-            onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) {
-                    return AdminHome();
-                  },
+          if (mainUser.fest == "fac")
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orange,
+                minimumSize: Size(120, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(
+                    color: Colors.transparent,
+                    width: 2.0,
+                  ),
                 ),
-              );
-            },
-            child: Text("Login as Fest Organizer"),
-          ),
+              ),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return FacultyHome();
+                    },
+                  ),
+                );
+              },
+              child: Text("Login as Faculty"),
+            ),
         ],
       ),
     );

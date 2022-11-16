@@ -36,6 +36,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                 } else {
                   await uploadEvent(
                       title, desc, venue, link, selec, timeinput.text);
+                  await sendNotif(
+                      "NEW EVENT!!!😎", title + " is the new Event added.");
                   Navigator.pop(context);
                 }
               },

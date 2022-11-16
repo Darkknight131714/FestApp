@@ -134,6 +134,7 @@ Future<void> uploadEvent(String title, String desc, String venue, String link,
     'date': selec,
     'time': time,
     'register': false,
+    'archive': false
   });
 }
 
@@ -158,7 +159,8 @@ Future<void> uploadRegisterEvent(
     'deadline': deadline,
     'teamSize': teamSize,
     'emails': [],
-    'registrations': []
+    'registrations': [],
+    'archive': false
   });
 }
 

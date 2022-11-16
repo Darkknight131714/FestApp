@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:festapp/func.dart';
 import 'package:festapp/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class _AdminMerchScreenState extends State<AdminMerchScreen> {
                     children: [
                       ListTile(
                         title: Text(snapshot.data!.docs[ind]['name']),
-                        subtitle: Text(snapshot.data!.docs[ind]['price']),
+                        subtitle: Text("₹" + snapshot.data!.docs[ind]['price']),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -111,6 +112,17 @@ class _AdminMerchScreenState extends State<AdminMerchScreen> {
                                     !snapshot.data!.docs[ind]['available'];
                                 await snapshot.data!.docs[ind].reference
                                     .update({'available': flag});
+                                if (flag) {
+                                  await sendNotif(
+                                      snapshot.data!.docs[ind]['name'] +
+                                          " is now availabe for purchase😎",
+                                      "Buy now before it gets unavailable.");
+                                } else {
+                                  await sendNotif(
+                                      snapshot.data!.docs[ind]['name'] +
+                                          " is now unavailabe for purchase",
+                                      "Contact the admins for any help.");
+                                }
                               },
                               child: Text(
                                   "Make merch ${m[snapshot.data!.docs[ind]['available']]}"),

@@ -99,93 +99,93 @@ class _MerchDetailState extends State<MerchDetail> {
       appBar: AppBar(
         title: Text(widget.doc['name']),
       ),
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints:
-              BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
-          child: Column(
-            children: [
-              SizedBox(
-                width: 500,
-                height: 400,
-                child: Swiper(
-                  itemCount: widget.doc['links'].length,
-                  pagination: SwiperPagination(),
-                  itemBuilder: (_, ind) {
-                    return Image.network(
+      body: ConstrainedBox(
+        constraints:
+            BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 500,
+              height: 400,
+              child: Swiper(
+                itemCount: widget.doc['links'].length,
+                pagination: SwiperPagination(),
+                itemBuilder: (_, ind) {
+                  return InteractiveViewer(
+                    child: Image.network(
                       widget.doc['links'][ind],
                       fit: BoxFit.fitWidth,
-                    );
-                  },
-                ),
-              ),
-              Text("Price: ${widget.doc['price']}"),
-              Divider(
-                color: Colors.orange,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("Select your Color"),
-              CustomRadioButton(
-                horizontal: false,
-                enableShape: true,
-                unSelectedColor: Colors.grey,
-                buttonLables: widget.doc['colors'].map<String>((val) {
-                  return val.toString();
-                }).toList(),
-                buttonValues: widget.doc['colors'].map<String>((val) {
-                  return val.toString();
-                }).toList(),
-                defaultSelected: def,
-                radioButtonValue: (value) {
-                  setState(() {
-                    color = value.toString();
-                  });
-                },
-                selectedColor: Theme.of(context).accentColor,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("Select your Color"),
-              CustomRadioButton(
-                horizontal: false,
-                enableShape: true,
-                unSelectedColor: Colors.grey,
-                buttonLables: sizes,
-                buttonValues: sizes,
-                defaultSelected: def1,
-                radioButtonValue: (value) {
-                  setState(() {
-                    size = value.toString();
-                  });
-                },
-                selectedColor: Theme.of(context).accentColor,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
-                  minimumSize: Size(120, 40),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(
-                      color: Colors.transparent,
-                      width: 2.0,
                     ),
+                  );
+                },
+              ),
+            ),
+            Text("Price: ₹${widget.doc['price']}"),
+            Divider(
+              color: Colors.orange,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text("Select your Color"),
+            CustomRadioButton(
+              horizontal: false,
+              enableShape: true,
+              unSelectedColor: Colors.grey,
+              buttonLables: widget.doc['colors'].map<String>((val) {
+                return val.toString();
+              }).toList(),
+              buttonValues: widget.doc['colors'].map<String>((val) {
+                return val.toString();
+              }).toList(),
+              defaultSelected: def,
+              radioButtonValue: (value) {
+                setState(() {
+                  color = value.toString();
+                });
+              },
+              selectedColor: Theme.of(context).accentColor,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text("Select your Size"),
+            CustomRadioButton(
+              horizontal: false,
+              enableShape: true,
+              unSelectedColor: Colors.grey,
+              buttonLables: sizes,
+              buttonValues: sizes,
+              defaultSelected: def1,
+              radioButtonValue: (value) {
+                setState(() {
+                  size = value.toString();
+                });
+              },
+              selectedColor: Theme.of(context).accentColor,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orange,
+                minimumSize: Size(120, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(
+                    color: Colors.transparent,
+                    width: 2.0,
                   ),
                 ),
-                onPressed: () async {
-                  openCheckout(int.parse(widget.doc['price']),
-                      widget.doc['name'], widget.fest, color!, size!);
-                },
-                child: Text("Buy"),
               ),
-            ],
-          ),
+              onPressed: () async {
+                openCheckout(int.parse(widget.doc['price']), widget.doc['name'],
+                    widget.fest, color!, size!);
+              },
+              child: Text("Buy"),
+            ),
+          ],
         ),
       ),
     );

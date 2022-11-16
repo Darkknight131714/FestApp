@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import 'main.dart';
 
@@ -41,21 +43,57 @@ class _RemoveOrderScreenState extends State<RemoveOrderScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(snapshot.data!.docs[ind]['name']),
-                            Text(snapshot.data!.docs[ind]['roll']),
-                          ],
-                        ),
-                        Text(snapshot.data!.docs[ind]['merchName']),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("Size: ${snapshot.data!.docs[ind]['size']}"),
-                            Text(snapshot.data!.docs[ind]['color']),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data!.docs[ind]['name'],
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(snapshot.data!.docs[ind]['roll']),
+                                Divider(),
+                                Text(snapshot.data!.docs[ind]['merchName'] +
+                                    " (" +
+                                    snapshot.data!.docs[ind]['color'] +
+                                    ")"),
+                                Row(
+                                  children: [
+                                    Text("Size: "),
+                                    Text(
+                                      snapshot.data!.docs[ind]['size'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                            // Text(snapshot.data!.docs[ind]['merchName']),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            //   children: [
+                            //     Text("Size: ${snapshot.data!.docs[ind]['size']}"),
+                            //     Text(snapshot.data!.docs[ind]['color']),
+                            //   ],
+                            // ),
+                            IconButton(
+                              onPressed: () async {
+                                await FlutterPhoneDirectCaller.callNumber(
+                                    snapshot.data!.docs[ind]['phone']);
+                              },
+                              icon: Icon(
+                                CupertinoIcons.phone_circle_fill,
+                                color: Colors.green,
+                                size: 50,
+                              ),
+                            ),
                           ],
                         ),
                         ElevatedButton(

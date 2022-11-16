@@ -73,6 +73,13 @@ class _addMerchScreenState extends State<addMerchScreen> {
                           ],
                         );
                       });
+                  await sendNotif(
+                      "New Merch Available🥳",
+                      mainUser.fest[0] +
+                          mainUser.fest[1] +
+                          mainUser.fest[2] +
+                          " added " +
+                          name);
                   Navigator.pop(context);
                 }
               },

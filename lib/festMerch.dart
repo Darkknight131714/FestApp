@@ -56,7 +56,7 @@ class _MerchScreenState extends State<MerchScreen> {
                       },
                       title: Text(snapshot.data!.docs[ind]['name']),
                       subtitle:
-                          Text("Price: ${snapshot.data!.docs[ind]['price']}"),
+                          Text("Price: ₹${snapshot.data!.docs[ind]['price']}"),
                     ),
                   );
                 }
