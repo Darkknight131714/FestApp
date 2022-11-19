@@ -1,4 +1,5 @@
 import 'package:festapp/buyMerch.dart';
+import 'package:festapp/func.dart';
 import 'package:festapp/main.dart';
 import 'package:festapp/seeEvents.dart';
 import 'package:festapp/seeRegistrations.dart';
@@ -20,17 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    FirebaseMessaging.onMessage.listen((RemoteMessage m) {
-      String info = m.notification!.body.toString();
-      String title = m.notification!.title.toString();
-      showTopSnackBar(
-        context,
-        CustomSnackBar.info(message: title + ": " + info),
-        displayDuration: Duration(seconds: 1),
-      );
-    });
   }
 
   @override

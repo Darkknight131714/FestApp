@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:festapp/registerTeam.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -48,13 +49,15 @@ Future<void> addUser(
   mainUser.changeUser(name, email, mobile, roll, "");
 }
 
-Future<void> keepLoggedIn(String email) async {
+Future<String> keepLoggedIn(String email) async {
+  String fest = "";
   await firestore
       .collection('users')
       .where('email', isEqualTo: email)
       .get()
       .then((QuerySnapshot querySnapshot) {
     querySnapshot.docs.forEach((documentSnapshot) {
+      fest = documentSnapshot['fest'];
       mainUser.changeUser(
           documentSnapshot['name'],
           email,
@@ -63,6 +66,7 @@ Future<void> keepLoggedIn(String email) async {
           documentSnapshot['fest']);
     });
   });
+  return fest;
 }
 
 Future<String> checkPower(String email) async {
@@ -206,6 +210,26 @@ Future<String> checkAlreadyRegistered(List<String> emails, String docID) async {
 Future sendNotif(String title, String info) async {
   Map<String, dynamic> m = {
     "to": "/topics/student",
+    "notification": {
+      "body": info,
+      "title": title,
+    },
+    "body": info,
+    "title": title,
+    "mutable_content": true,
+    "sound": "Tri-tone"
+  };
+  Uri url = Uri.parse("https://fcm.googleapis.com/fcm/send");
+  var resp = await http.post(url, body: jsonEncode(m), headers: {
+    "Authorization":
+        "key=AAAAfQgzZLc:APA91bErrTyOqy_tQYphJRhE8sKtjGV1le8GFOQIWmbsFvoJ2HkefKTBt67FbQUgB9NY8ZMCLM9hFQ6X0kqdndRzV8pISQ7jH2o4qpMseb5L46HzpoqbI5t7HI61EWyNzFvRehUymnkx",
+    "Content-Type": "application/json"
+  });
+}
+
+Future sendTaskNotif(String title, String info, String fest) async {
+  Map<String, dynamic> m = {
+    "to": "/topics/${fest}",
     "notification": {
       "body": info,
       "title": title,

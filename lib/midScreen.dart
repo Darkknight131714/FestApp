@@ -2,6 +2,7 @@ import 'package:festapp/facultyHome.dart';
 import 'package:festapp/home.dart';
 import 'package:festapp/inter.dart';
 import 'package:festapp/main.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'adminHome.dart';
@@ -14,6 +15,11 @@ class MidScreen extends StatefulWidget {
 }
 
 class _MidScreenState extends State<MidScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

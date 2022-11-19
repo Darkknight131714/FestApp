@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:festapp/func.dart';
+import 'package:festapp/individualRegistration.dart';
 import 'package:festapp/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,35 @@ class _AdminMerchScreenState extends State<AdminMerchScreen> {
                       ListTile(
                         title: Text(snapshot.data!.docs[ind]['name']),
                         subtitle: Text("₹" + snapshot.data!.docs[ind]['price']),
+                        trailing: IconButton(
+                          onPressed: () async {
+                            List<List<String>> data = [];
+                            List<String> row = [];
+                            CollectionReference orders =
+                                FirebaseFirestore.instance.collection('orders');
+                            await orders
+                                .get()
+                                .then((QuerySnapshot querySnapshot) {
+                              for (var doc in querySnapshot.docs) {
+                                if (doc['fest'] == mainUser.fest &&
+                                    doc['merchName'] ==
+                                        snapshot.data!.docs[ind]['name']) {
+                                  row.add(doc['name']);
+                                  row.add(doc['roll']);
+                                  row.add(doc['phone']);
+                                  row.add(doc['merchName']);
+                                  row.add(doc['color']);
+                                  row.add(doc['size']);
+                                  data.add(row);
+                                  row = [];
+                                }
+                              }
+                            });
+                            myCSV(row, data,
+                                "${mainUser.fest}_${snapshot.data!.docs[ind]['name']}");
+                          },
+                          icon: Icon(Icons.download),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),

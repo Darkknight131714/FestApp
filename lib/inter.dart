@@ -1,7 +1,10 @@
 import 'package:festapp/buyMerch.dart';
 import 'package:festapp/home.dart';
 import 'package:festapp/seeEvents.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 List<Widget> pages = [
   HomeScreen(),
@@ -19,11 +22,27 @@ class InterScreen extends StatefulWidget {
 class _InterScreenState extends State<InterScreen> {
   PageController _pageController = PageController();
   int _index = 0;
+  var r;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _pageController = PageController(initialPage: _index);
+    r = FirebaseMessaging.onMessage.listen((RemoteMessage m) {
+      String info = m.notification!.body.toString();
+      String title = m.notification!.title.toString();
+      showTopSnackBar(
+        context,
+        CustomSnackBar.info(message: title + ": " + info),
+        displayDuration: Duration(seconds: 1),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    r.cancel();
   }
 
   @override

@@ -5,10 +5,13 @@ import 'package:festapp/addRegisterEvent.dart';
 import 'package:festapp/adminEventScreen.dart';
 import 'package:festapp/adminMerch.dart';
 import 'package:festapp/adminOrders.dart';
+import 'package:festapp/seeTask.dart';
 import 'package:festapp/sendNotif.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import 'main.dart';
 
@@ -22,6 +25,27 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  var r;
+  @override
+  void initState() {
+    super.initState();
+    r = FirebaseMessaging.onMessage.listen((RemoteMessage m) {
+      String info = m.notification!.body.toString();
+      String title = m.notification!.title.toString();
+      showTopSnackBar(
+        context,
+        CustomSnackBar.info(message: title + ": " + info),
+        displayDuration: Duration(seconds: 1),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    r.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +99,14 @@ class _AdminHomeState extends State<AdminHome> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
                   return AdminMerchScreen();
+                }));
+              },
+            ),
+            ListTile(
+              title: const Text("Tasks"),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return TaskScreen();
                 }));
               },
             ),
@@ -170,6 +202,7 @@ class _AdminHomeState extends State<AdminHome> {
               FirebaseMessaging.instance.unsubscribeFromTopic(temp);
               FirebaseMessaging.instance.unsubscribeFromTopic('student');
               if (mainUser.fest != "") {
+                FirebaseMessaging.instance.unsubscribeFromTopic(mainUser.fest);
                 Navigator.pop(context);
               }
             },

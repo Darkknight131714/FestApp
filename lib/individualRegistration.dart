@@ -1,6 +1,39 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:to_csv/to_csv.dart' as exportCSV;
+import 'package:intl/intl.dart';
+import 'package:flutter/foundation.dart';
+import 'package:file_saver/file_saver.dart';
+
+void myCSV(List<String> headerRow, List<List<String>> listOfListOfStrings,
+    String title) async {
+  int lengthOfHeaderRow = headerRow.length;
+  int lengthOfListOfList = listOfListOfStrings.first.length;
+  bool valuesInListOfListAreSame = false;
+  if (lengthOfHeaderRow == lengthOfListOfList) {
+    listOfListOfStrings.forEach((element) {
+      if (element.length == lengthOfHeaderRow) {
+        valuesInListOfListAreSame = true;
+      } else {
+        valuesInListOfListAreSame = false;
+        return;
+      }
+    });
+    //Now that its confirmed that length of header elements and row elemnts are same lets create the csvFile
+  }
+
+  String csvData = const ListToCsvConverter().convert(listOfListOfStrings);
+
+  DateTime now = DateTime.now();
+  String formattedData = DateFormat('MM-dd-yyyy-HH-mm-ss').format(now);
+
+  final bytes = utf8.encode(csvData);
+  Uint8List bytes2 = Uint8List.fromList(bytes);
+  MimeType type = MimeType.CSV;
+  await FileSaver.instance.saveAs('${title}.csv', bytes2, 'csv', type);
+}
 
 class IndividualRegistrationScreen extends StatefulWidget {
   String docID;
@@ -13,6 +46,7 @@ class IndividualRegistrationScreen extends StatefulWidget {
 
 class _IndividualRegistrationScreenState
     extends State<IndividualRegistrationScreen> {
+  String title = "";
   int req = 3;
   List<dynamic> lis = [];
   @override
@@ -41,7 +75,7 @@ class _IndividualRegistrationScreenState
                 // print(row);
               }
               data.add(row);
-              exportCSV.myCSV(header, data);
+              myCSV(header, data, title);
             },
             icon: Icon(Icons.download),
           ),
@@ -56,6 +90,7 @@ class _IndividualRegistrationScreenState
           if (snapshot.hasData == false) {
             return const CircularProgressIndicator();
           } else {
+            title = snapshot.data!['title'];
             lis = snapshot.data!['registrations'];
             return ListView.builder(
               itemCount: snapshot.data!['registrations'].length,

@@ -1,6 +1,8 @@
+import 'package:festapp/main.dart';
 import 'package:festapp/signUp.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'func.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -84,9 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 String value = await signIn(email, password);
                 if (value == 'True') {
                   await FirebaseMessaging.instance.subscribeToTopic('student');
-                  String temp = email.replaceAll('@', '_');
-                  await FirebaseMessaging.instance.subscribeToTopic(temp);
-                  await keepLoggedIn(email);
+                  String f = await keepLoggedIn(email);
+                  if (f != "") {
+                    await FirebaseMessaging.instance.subscribeToTopic(f);
+                  }
                 } else {
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(value)));
