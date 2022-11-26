@@ -42,142 +42,148 @@ class _AdminOrdersState extends State<AdminOrders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black12,
-        automaticallyImplyLeading: false,
-        title: SizedBox(
-          height: 100,
-          child: EasySearchBar(
-            title: Text("All Orders"),
-            onSearch: (value) {
-              setState(() {
-                searchValue = value;
-              });
-            },
-            suggestions: suggestions,
-            onSuggestionTap: (val) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) {
-                  return RemoveOrderScreen(name: val);
-                }),
-              );
-            },
-          ),
-        ),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('orders')
-            .where('fest', isEqualTo: fest)
-            .snapshots(),
-        builder: (_, snapshot) {
-          if (snapshot.hasData == false) {
-            return CircularProgressIndicator();
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (_, ind) {
-                if (snapshot.data!.docs[ind]['delivered']) {
-                  return SizedBox();
-                }
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  snapshot.data!.docs[ind]['name'],
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(snapshot.data!.docs[ind]['roll']),
-                                Divider(),
-                                Text(snapshot.data!.docs[ind]['merchName'] +
-                                    " (" +
-                                    snapshot.data!.docs[ind]['color'] +
-                                    ")"),
-                                Row(
-                                  children: [
-                                    Text("Size: "),
-                                    Text(
-                                      snapshot.data!.docs[ind]['size'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                            // Text(snapshot.data!.docs[ind]['merchName']),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            //   children: [
-                            //     Text("Size: ${snapshot.data!.docs[ind]['size']}"),
-                            //     Text(snapshot.data!.docs[ind]['color']),
-                            //   ],
-                            // ),
-                            IconButton(
-                              onPressed: () async {
-                                await FlutterPhoneDirectCaller.callNumber(
-                                    snapshot.data!.docs[ind]['phone']);
-                              },
-                              icon: Icon(
-                                CupertinoIcons.phone_circle_fill,
-                                color: Colors.green,
-                                size: 50,
-                              ),
-                            ),
-                          ],
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return AlertDialog(
-                                    title: Text(
-                                        "Are you sure you want to mark this as delivered?"),
-                                    actions: [
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          await snapshot
-                                              .data!.docs[ind].reference
-                                              .update({
-                                            'delivered': true,
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("Yes"),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("No"),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          child: Text("Mark as Delivered"),
-                        ),
-                      ],
-                    ),
-                  ),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 100,
+            child: EasySearchBar(
+              title: Text("All Orders"),
+              onSearch: (value) {
+                setState(() {
+                  searchValue = value;
+                });
+              },
+              suggestions: suggestions,
+              onSuggestionTap: (val) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) {
+                    return RemoveOrderScreen(name: val);
+                  }),
                 );
               },
-            );
-          }
-        },
+            ),
+          ),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('orders')
+                .where('fest', isEqualTo: fest)
+                .snapshots(),
+            builder: (_, snapshot) {
+              if (snapshot.hasData == false) {
+                return CircularProgressIndicator();
+              } else {
+                return Flexible(
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (_, ind) {
+                      if (snapshot.data!.docs[ind]['delivered']) {
+                        return SizedBox();
+                      }
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        snapshot.data!.docs[ind]['name'],
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(snapshot.data!.docs[ind]['roll']),
+                                      Divider(),
+                                      Text(snapshot.data!.docs[ind]
+                                              ['merchName'] +
+                                          " (" +
+                                          snapshot.data!.docs[ind]['color'] +
+                                          ")"),
+                                      Row(
+                                        children: [
+                                          Text("Size: "),
+                                          Text(
+                                            snapshot.data!.docs[ind]['size'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  // Text(snapshot.data!.docs[ind]['merchName']),
+                                  // Row(
+                                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  //   children: [
+                                  //     Text("Size: ${snapshot.data!.docs[ind]['size']}"),
+                                  //     Text(snapshot.data!.docs[ind]['color']),
+                                  //   ],
+                                  // ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      await FlutterPhoneDirectCaller.callNumber(
+                                          snapshot.data!.docs[ind]['phone']);
+                                    },
+                                    icon: Icon(
+                                      CupertinoIcons.phone_circle_fill,
+                                      color: Colors.green,
+                                      size: 50,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return AlertDialog(
+                                          title: Text(
+                                              "Are you sure you want to mark this as delivered?"),
+                                          actions: [
+                                            ElevatedButton(
+                                              onPressed: () async {
+                                                await snapshot
+                                                    .data!.docs[ind].reference
+                                                    .update({
+                                                  'delivered': true,
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("Yes"),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("No"),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: Text("Mark as Delivered"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }

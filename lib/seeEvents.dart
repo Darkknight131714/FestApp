@@ -83,8 +83,8 @@ class _EventScreenState extends State<EventScreen> {
                               ),
                               child: Image.network(
                                   snapshot.data!.docs[ind]['link'],
-                                  width: 250,
-                                  height: 150,
+                                  width: 300,
+                                  height: 200,
                                   fit: BoxFit.fill),
                             ),
                             Padding(

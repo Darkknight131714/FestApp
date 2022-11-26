@@ -45,6 +45,8 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
               child: Image.network(
                 widget.doc['link'],
                 height: MediaQuery.of(context).size.height / 2,
+                width: 300,
+                fit: BoxFit.fill,
               ),
             ),
             SizedBox(
